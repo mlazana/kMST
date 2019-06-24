@@ -1,5 +1,5 @@
 <div align="center">
-<h1><b> kMST</b><img src="mst.png" width=130px style=margin-bottom:-30px><br/>
+<h1><b> kMST</b><img src="png/mst.png" width=130px style=margin-bottom:-30px><br/>
 
 <sub><h4>Implementation of k-minimum spanning tree (kMST) problem.</h4></h1>
 

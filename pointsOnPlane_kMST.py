@@ -1,7 +1,41 @@
 import itertools
 import numpy
 import math
+from math import atan2,degrees
 import sys
+
+
+'''
+This functions returns the four points of a square
+in a plane (k1,k2,k3,k4)
+
+k1--------k2
+|          |
+|          |
+|          |
+k4--------k3
+'''
+
+def getSquarePoints(x1,x2,y1,y2,radius):
+
+    # Angle of line
+    angle = math.degrees(atan2(y2-y1,x2-x1))
+    
+    k1_x = round(radius*(math.cos(math.radians(angle+90))) + x1,2)
+    k1_y = round(radius*(math.sin(math.radians(angle+90))) + y1,2)
+
+    k2_x = round(radius*(math.cos(math.radians(angle+90))) + x2,2)
+    k2_y = round(radius*(math.sin(math.radians(angle+90))) + y2,2)
+
+    k3_x = round(radius*(math.cos(math.radians(angle-90))) + x1,2)
+    k3_y = round(radius*(math.sin(math.radians(angle-90))) + y1,2)
+
+    k4_x = round(radius*(math.cos(math.radians(angle-90))) + x2,2)
+    k4_y = round(radius*(math.sin(math.radians(angle+90))) + y2,2)
+
+    squarePoints = [k1_x,k1_y,k2_x,k2_y,k3_x,k3_y,k4_x,k4_y]
+
+    return squarePoints
 
 S = []
 d = {}

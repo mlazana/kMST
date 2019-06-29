@@ -64,18 +64,38 @@ for pair in itertools.combinations(S,2):
     d[pair] = math.sqrt(((x1 - x2)**2)+((y1-y2)**2))
 
     # Constracting a circle
-    circleDiameter = math.sqrt(3)*(d[pair])
+    circleDiameter = round(math.sqrt(3)*(d[pair]),2)
+    print("circleDiameter:",circleDiameter)
+    # New edge points 
+    if x1 < x2:
+        x1 = round(pair[0][0] - circleDiameter/2,2)
+        x2 = round(pair[1][0] + circleDiameter/2,2)
+    else:
+        x1 = round(pair[0][0] + circleDiameter/2,2)
+        x2 = round(pair[1][0] - circleDiameter/2,2)
+    print("New x1:",x1,"New x2",x2)
     # Centering the circle at midpont of the line segment
-    circleCenter = ((x2+x1)/2,(y2+y1)/2)
+    circleCenter = (round((x2+x1)/2,2),round((y2+y1)/2),2)
 
     #Let Sc be the subset of S containedin circle
     Sc = {}
     values = []
+    print("this is my pair", pair)
     for point in S:
-        # print("this is my pair", pair)
-        centerDistance = (point[0]  - circleCenter[0])**2 + (point[1] - circleCenter[1])**2
-        # print(centerDistance)
-        if centerDistance < circleDiameter/2:
+        print("point:", point)
+        print("Circle center:", circleCenter)
+        centerDistance = round(math.sqrt((point[0]  - circleCenter[0])**2 + (point[1] - circleCenter[1])**2),2)
+        print("centerDistance: ",centerDistance)
+        if centerDistance <= circleDiameter/2:
             key = pair
             Sc.setdefault(key, [])
             Sc[key].append(point)
+
+    print("Sc:",Sc)
+    if  bool(Sc) or len(Sc[pair]) > k  :
+        squarePoints = getSquarePoints(x1,x2,y1,y2,circleDiameter/2)
+        print("SquarePoints :  ",squarePoints)
+        print("---------------")
+    else:
+        continue
+

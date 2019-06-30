@@ -117,18 +117,40 @@ for pair in itertools.combinations(S,2):
             key = pair
             Sc.setdefault(key, [])
             Sc[key].append(point)
+    
+     # Angle of line
+    angle = math.degrees(atan2(y2-y1,x2-x1))
 
     #print("Sc:",Sc)
     print("Pair",pair)
     if  len(Sc[pair]) > k  :
         # Let Q be the square of side 5 circumscribing C.
         # Returns a list of [k1_x,k1_y,k2_x,k2_y,k3_x,k3_y,k4_x,k4_y] points
+        
         Q = getSquarePoints(x1,x2,y1,y2,circleDiameter/2)
 
         print("SquarePoints :  ",Q)
         print("---------------")
 
         # Divide Q into k square cells each with side circleDiameter/sqrt(k)
+        subSquare = {}
+
+        x = Q[0]
+        y = Q[1]
+
+        side = 0.5 #round(circleDiameter/(math.sqrt(k)),2)
+        diameter = round(side * math.sqrt(2),2)
+
+        for i in range(k):
+            subSquare[i] = getSubSquare(x,y,diameter,side,angle)
+            print("SUBSQUARE:",subSquare[i])
+
+            if subSquare[i][2] < Q[2]:
+                x = subSquare[i][2]
+                y = subSquare[i][3]
+            else:
+                x = subSquare[0][6]
+                y = subSquare[0][7] 
         
     else:
         continue

@@ -37,6 +37,32 @@ def getSquarePoints(x1,x2,y1,y2,radius):
 
     return squarePoints
 
+'''
+This function takes k1 point of square and returns the other
+three points based on the diameter of square
+
+k1--------k2
+|          |
+|          |
+|          |
+k4--------k3
+
+'''
+def getSubSquare(k1_x,k1_y,diameter,side,angle):
+    
+    k3_x = round(diameter*(math.cos(math.radians(angle-45)))+ k1_x,2)
+    k3_y = round(diameter*(math.sin(math.radians(angle-45))) + k1_y,2)
+
+    k2_x = round(side*(math.cos(math.radians(90+angle))) + k3_x,2)
+    k2_y = round(side*(math.sin(math.radians(90+angle))) + k3_y,2)
+
+    k4_x = round(side*(math.cos(math.radians(180+angle))) + k3_x,2)
+    k4_y = round(side*(math.sin(math.radians(180+angle))) + k3_y,2)
+
+    squarePoints = [k1_x,k1_y,k2_x,k2_y,k3_x,k3_y,k4_x,k4_y]
+
+    return squarePoints
+
 S = []
 d = {}
 
@@ -62,6 +88,7 @@ for pair in itertools.combinations(S,2):
     y2 = pair[1][1]
     # Creating distances based on euclidean distance for every pair
     d[pair] = math.sqrt(((x1 - x2)**2)+((y1-y2)**2))
+    print(d[pair])
 
     # Constracting a circle
     circleDiameter = round(math.sqrt(3)*(d[pair]),2)
@@ -72,9 +99,9 @@ for pair in itertools.combinations(S,2):
         x2 = round(pair[1][0] + circleDiameter/2,2)
     else:
         x1 = round(pair[0][0] + circleDiameter/2,2)
-        x2 = round(pair[1][0] - circleDiameter/2,2)
-    print("New x1:",x1,"New x2",x2)
-    # Centering the circle at midpont of the line segment
+        x2 =round(pair[1][0] - circleDiameter/2,2)
+    print("N.5ew x1:",x1,"New x2",x2)
+    # Center.5ing the circle at midpont of the line segment
     circleCenter = (round((x2+x1)/2,2),round((y2+y1)/2),2)
 
     #Let Sc be the subset of S containedin circle
@@ -102,25 +129,7 @@ for pair in itertools.combinations(S,2):
         print("---------------")
 
         # Divide Q into k square cells each with side circleDiameter/sqrt(k)
-        #mporei na vvgalei error outof range
-        side = circleDiameter/round(math.sqrt(k),2)
-        subSquares = {}
-        k_x = Q[0]
-        k_y = Q[1]
-        for i in range(k):
-            x1 = k_x
-            y1 = k_y - side/2
-            x2 = k_x + side
-            y2 = y1
-            
-            subSquares[i]= getSquarePoints(x1,x2,y1,y2,side)
-            #print("SubSquares",subSquares)
-            
-            if k_x + side < Q[2]:
-                k_x += side
-            else:
-                k_x = Q[0]
-                k_y = k_y - side  
+        
     else:
         continue
     

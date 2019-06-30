@@ -26,12 +26,12 @@ def getSquarePoints(x1,x2,y1,y2,radius):
 
     k2_x = round(radius*(math.cos(math.radians(angle+90))) + x2,2)
     k2_y = round(radius*(math.sin(math.radians(angle+90))) + y2,2)
-
-    k3_x = round(radius*(math.cos(math.radians(angle-90))) + x1,2)
-    k3_y = round(radius*(math.sin(math.radians(angle-90))) + y1,2)
-
-    k4_x = round(radius*(math.cos(math.radians(angle-90))) + x2,2)
-    k4_y = round(radius*(math.sin(math.radians(angle+90))) + y2,2)
+   
+    k3_x = round(radius*(math.cos(math.radians(angle-90))) + x2,2)
+    k3_y = round(radius*(math.sin(math.radians(angle-90))) + y2,2)
+   
+    k4_x = round(radius*(math.cos(math.radians(angle-90))) + x1,2)
+    k4_y = round(radius*(math.sin(math.radians(angle-90))) + y1,2)
 
     squarePoints = [k1_x,k1_y,k2_x,k2_y,k3_x,k3_y,k4_x,k4_y]
 
@@ -41,7 +41,7 @@ S = []
 d = {}
 
 #k is given as an input
-k = 2
+k = 1
 
 #read each line from the file
 with open(sys.argv[1]) as f:
@@ -80,22 +80,49 @@ for pair in itertools.combinations(S,2):
     #Let Sc be the subset of S containedin circle
     Sc = {}
     values = []
-    print("this is my pair", pair)
+    #print("this is my pair", pair)
     for point in S:
-        print("point:", point)
-        print("Circle center:", circleCenter)
+        #print("point:", point)
+        #print("Circle center:", circleCenter)
         centerDistance = round(math.sqrt((point[0]  - circleCenter[0])**2 + (point[1] - circleCenter[1])**2),2)
-        print("centerDistance: ",centerDistance)
+        #print("centerDistance: ",centerDistance)
         if centerDistance <= circleDiameter/2:
             key = pair
             Sc.setdefault(key, [])
             Sc[key].append(point)
 
-    print("Sc:",Sc)
-    if  bool(Sc) or len(Sc[pair]) > k  :
-        squarePoints = getSquarePoints(x1,x2,y1,y2,circleDiameter/2)
-        print("SquarePoints :  ",squarePoints)
+    #print("Sc:",Sc)
+    print("Pair",pair)
+    if  len(Sc[pair]) > k  :
+        # Let Q be the square of side 5 circumscribing C.
+        # Returns a list of [k1_x,k1_y,k2_x,k2_y,k3_x,k3_y,k4_x,k4_y] points
+        Q = getSquarePoints(x1,x2,y1,y2,circleDiameter/2)
+
+        print("SquarePoints :  ",Q)
         print("---------------")
+
+        # Divide Q into k square cells each with side circleDiameter/sqrt(k)
+        #mporei na vvgalei error outof range
+        side = circleDiameter/round(math.sqrt(k),2)
+        subSquares = {}
+        k_x = Q[0]
+        k_y = Q[1]
+        for i in range(k):
+            x1 = k_x
+            y1 = k_y - side/2
+            x2 = k_x + side
+            y2 = y1
+            
+            subSquares[i]= getSquarePoints(x1,x2,y1,y2,side)
+            #print("SubSquares",subSquares)
+            
+            if k_x + side < Q[2]:
+                k_x += side
+            else:
+                k_x = Q[0]
+                k_y = k_y - side  
     else:
         continue
+    
+
 

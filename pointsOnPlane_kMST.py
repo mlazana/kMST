@@ -88,7 +88,6 @@ for pair in itertools.combinations(S,2):
     y2 = pair[1][1]
     # Creating distances based on euclidean distance for every pair
     d[pair] = math.sqrt(((x1 - x2)**2)+((y1-y2)**2))
-    print(d[pair])
 
     # Constracting a circle
     circleDiameter = round(math.sqrt(3)*(d[pair]),2)
@@ -121,16 +120,16 @@ for pair in itertools.combinations(S,2):
      # Angle of line
     angle = math.degrees(atan2(y2-y1,x2-x1))
 
-    #print("Sc:",Sc)
-    print("Pair",pair)
+    print("Sc:",Sc)
+    #print("Pair",pair)
     if  len(Sc[pair]) > k  :
         # Let Q be the square of side 5 circumscribing C.
         # Returns a list of [k1_x,k1_y,k2_x,k2_y,k3_x,k3_y,k4_x,k4_y] points
         
         Q = getSquarePoints(x1,x2,y1,y2,circleDiameter/2)
 
-        print("SquarePoints :  ",Q)
-        print("---------------")
+        #print("SquarePoints :  ",Q)
+        #print("---------------")
 
         # Divide Q into k square cells each with side circleDiameter/sqrt(k)
         subSquare = {}

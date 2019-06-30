@@ -67,7 +67,7 @@ S = []
 d = {}
 
 #k is given as an input
-k = 1
+k = 4
 
 #read each line from the file
 with open(sys.argv[1]) as f:
@@ -92,7 +92,7 @@ for pair in itertools.combinations(S,2):
 
     # Constracting a circle
     circleDiameter = round(math.sqrt(3)*(d[pair]),2)
-    print("circleDiameter:",circleDiameter)
+    
     # New edge points 
     if x1 < x2:
         x1 = round(pair[0][0] - circleDiameter/2,2)
@@ -100,8 +100,8 @@ for pair in itertools.combinations(S,2):
     else:
         x1 = round(pair[0][0] + circleDiameter/2,2)
         x2 =round(pair[1][0] - circleDiameter/2,2)
-    print("N.5ew x1:",x1,"New x2",x2)
-    # Center.5ing the circle at midpont of the line segment
+    
+    # Centering the circle at midpont of the line segment
     circleCenter = (round((x2+x1)/2,2),round((y2+y1)/2),2)
 
     #Let Sc be the subset of S containedin circle
@@ -143,7 +143,6 @@ for pair in itertools.combinations(S,2):
 
         for i in range(k):
             subSquare[i] = getSubSquare(x,y,diameter,side,angle)
-            print("SUBSQUARE:",subSquare[i])
 
             if subSquare[i][2] < Q[2]:
                 x = subSquare[i][2]
@@ -151,7 +150,7 @@ for pair in itertools.combinations(S,2):
             else:
                 x = subSquare[0][6]
                 y = subSquare[0][7] 
-        
+        print("SUBSQUARE:",subSquare)
     else:
         continue
     

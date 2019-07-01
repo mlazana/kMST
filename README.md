@@ -24,7 +24,7 @@ The research is focusing on finding small trees. In terms of the bonus assignmen
 
 The arguments are specified in the research.
 
-`python3 pointsONPlane_kMST.py <data> <k>`
+`python3 pointsOnPlane_kMST.py <data> <k>`
 
 Example:
 

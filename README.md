@@ -28,4 +28,4 @@ The arguments are specified in the research.
 
 Example:
 
-`python3 pointsOnPlane_kMST.py data/example1.txt 4`
+`python3 pointsOnPlane_kMST.py data/points.txt 4`

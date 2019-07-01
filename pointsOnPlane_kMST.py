@@ -3,19 +3,17 @@ import numpy
 import math
 from math import atan2,degrees
 import sys
-
+import operator
 
 '''
 This functions returns the four points of a square
 in a plane (k1,k2,k3,k4)
-
 k1--------k2
 |          |
 |          |
 |          |
 k4--------k3
 '''
-
 def getSquarePoints(x1,x2,y1,y2,radius):
 
     # Angle of line
@@ -40,13 +38,11 @@ def getSquarePoints(x1,x2,y1,y2,radius):
 '''
 This function takes k1 point of square and returns the other
 three points based on the diameter of square
-
 k1--------k2
 |          |
 |          |
 |          |
 k4--------k3
-
 '''
 def getSubSquare(k1_x,k1_y,diameter,side,angle):
     
@@ -60,8 +56,29 @@ def getSubSquare(k1_x,k1_y,diameter,side,angle):
     k4_y = round(side*(math.sin(math.radians(180+angle))) + k3_y,2)
 
     squarePoints = [k1_x,k1_y,k2_x,k2_y,k3_x,k3_y,k4_x,k4_y]
-
     return squarePoints
+
+'''
+This function checks the number of points a cell contains
+*It's not working perfeclty for rotated cells as 
+*it counts points that are not inside the cell
+*need to find propably area of triangles
+'''
+def pointsInSquare(cell,point):
+    points = []
+    for p in point:
+        x = p[0]
+        y = p[1]
+        
+        min_x = min(cell[0],cell[2],cell[4],cell[6])
+        max_x = max(cell[0],cell[2],cell[4],cell[6])
+
+        min_y = min(cell[1],cell[3],cell[5],cell[7])
+        max_y = max(cell[1],cell[3],cell[5],cell[7])
+        
+        if (min_x <= x <= max_x) and (min_y <= y <= max_y):
+            points.append(tuple((x,y)))
+    return points
 
 S = []
 d = {}
@@ -75,8 +92,6 @@ with open(sys.argv[1]) as f:
         c = [x.strip() for x in line.split(',')]
         #list S containes tuples of x,y coordinates
         S.append((int(c[0]),int(c[1])))
-
-
     
 # For any pair of points si and sj, 
 # let d(i,j) denote the Euclidean distance between si and sj.
@@ -86,6 +101,7 @@ for pair in itertools.combinations(S,2):
     x2 = pair[1][0]
     y1 = pair[0][1]
     y2 = pair[1][1]
+
     # Creating distances based on euclidean distance for every pair
     d[pair] = math.sqrt(((x1 - x2)**2)+((y1-y2)**2))
 
@@ -106,30 +122,24 @@ for pair in itertools.combinations(S,2):
     #Let Sc be the subset of S containedin circle
     Sc = {}
     values = []
-    #print("this is my pair", pair)
+
     for point in S:
-        #print("point:", point)
-        #print("Circle center:", circleCenter)
+
         centerDistance = round(math.sqrt((point[0]  - circleCenter[0])**2 + (point[1] - circleCenter[1])**2),2)
-        #print("centerDistance: ",centerDistance)
+        
         if centerDistance <= circleDiameter/2:
             key = pair
             Sc.setdefault(key, [])
             Sc[key].append(point)
     
-     # Angle of line
+    # Angle of line
     angle = math.degrees(atan2(y2-y1,x2-x1))
-
-    print("Sc:",Sc)
-    #print("Pair",pair)
+    
     if  len(Sc[pair]) > k  :
+        print("Pair",pair)
         # Let Q be the square of side 5 circumscribing C.
         # Returns a list of [k1_x,k1_y,k2_x,k2_y,k3_x,k3_y,k4_x,k4_y] points
-        
         Q = getSquarePoints(x1,x2,y1,y2,circleDiameter/2)
-
-        #print("SquarePoints :  ",Q)
-        #print("---------------")
 
         # Divide Q into k square cells each with side circleDiameter/sqrt(k)
         subSquare = {}
@@ -137,7 +147,7 @@ for pair in itertools.combinations(S,2):
         x = Q[0]
         y = Q[1]
 
-        side = 0.5 #round(circleDiameter/(math.sqrt(k)),2)
+        side = round(circleDiameter/(math.sqrt(k)),2)
         diameter = round(side * math.sqrt(2),2)
 
         for i in range(k):
@@ -149,9 +159,27 @@ for pair in itertools.combinations(S,2):
             else:
                 x = subSquare[0][6]
                 y = subSquare[0][7] 
-        print("SUBSQUARE:",subSquare)
+
+        # Clculate the number of points square cells contain
+        numberOfPoints = {}
+        for key, value in subSquare.items():
+            points = pointsInSquare(value,Sc[pair])
+            numberOfPoints[len(points)] = points 
+
+        # Choose the minimum number of cells so that the chosen cells together
+        # contain at least k points.
+        sort = sorted(numberOfPoints.items(), key=operator.itemgetter(0))   
+
+        kPoints = []
+        for i in sort[::-1]:
+            if len(kPoints)<=k:
+                p = i[1]
+                j = 0
+                while len(kPoints)<k and j < len(p):
+                    kPoints.append(p[j])
+                    j += 1  lkh.kjh.kj
+            else:
+                continue
+        print("kPoints: ",kPoints)
     else:
         continue
-    
-
-

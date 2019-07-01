@@ -1,9 +1,11 @@
 import itertools
 import numpy
+import scipy
 import math
 from math import atan2,degrees
 import sys
 import operator
+from networkx import *
 
 '''
 This functions returns the four points of a square
@@ -82,11 +84,10 @@ def pointsInSquare(cell,point):
 
 S = []
 d = {}
+k = int(sys.argv[2])
+minimum = sys.maxsize
 
-#k is given as an input
-k = 4
-
-#read each line from the file
+# Read each line from the file
 with open(sys.argv[1]) as f:
     for line in f:
         c = [x.strip() for x in line.split(',')]
@@ -119,7 +120,7 @@ for pair in itertools.combinations(S,2):
     # Centering the circle at midpont of the line segment
     circleCenter = (round((x2+x1)/2,2),round((y2+y1)/2),2)
 
-    #Let Sc be the subset of S containedin circle
+    # Let Sc be the subset of S containedin circle
     Sc = {}
     values = []
 
@@ -136,7 +137,7 @@ for pair in itertools.combinations(S,2):
     angle = math.degrees(atan2(y2-y1,x2-x1))
     
     if  len(Sc[pair]) > k  :
-        print("Pair",pair)
+        
         # Let Q be the square of side 5 circumscribing C.
         # Returns a list of [k1_x,k1_y,k2_x,k2_y,k3_x,k3_y,k4_x,k4_y] points
         Q = getSquarePoints(x1,x2,y1,y2,circleDiameter/2)
@@ -169,7 +170,7 @@ for pair in itertools.combinations(S,2):
         # Choose the minimum number of cells so that the chosen cells together
         # contain at least k points.
         sort = sorted(numberOfPoints.items(), key=operator.itemgetter(0))   
-
+        
         kPoints = []
         for i in sort[::-1]:
             if len(kPoints)<=k:
@@ -177,9 +178,24 @@ for pair in itertools.combinations(S,2):
                 j = 0
                 while len(kPoints)<k and j < len(p):
                     kPoints.append(p[j])
-                    j += 1  lkh.kjh.kj
+                    j += 1  
             else:
                 continue
-        print("kPoints: ",kPoints)
+
+        g = Graph()
+        for pair in itertools.combinations(kPoints,2):
+            x1 = pair[0][0]
+            x2 = pair[1][0]
+            y1 = pair[0][1]
+            y2 = pair[1][1]
+            w = round(math.sqrt(((x1 - x2)**2)+((y1-y2)**2)),2)
+            g.add_edge(pair[0],pair[1],weight=w)
+        
+        value = len(list(minimum_spanning_edges(g)))
+
+        if value < minimum and value !=0:
+            minimum = value
     else:
         continue
+    
+print(minimum)

@@ -8,3 +8,24 @@
 <a href="https://github.com/mlazana/kMST/blob/master/paper/ravi1996.pdf">Research</a> 
 </h3>
 
+<hr/>
+</div>
+
+## Introduction
+
+The research is focusing on finding small trees. In terms of the bonus assignment in the course "Algorithms" of Athens University of Economics and Business I had to implement an approximation algorithm for points on the plane in python explained in section 4 (page 8) of the research.
+
+## Instalation
+
+- Clone the repository
+- Install Python 3.0
+
+## Run
+
+The arguments are specified in the research.
+
+`python3 pointsONPlane_kMST.py <data> <k>`
+
+Example:
+
+`python3 pointsOnPlane_kMST.py data/example1.txt 4`
